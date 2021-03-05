@@ -1,1 +1,14 @@
-<h1>어서오세요 !</h1>
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Jibrary Home</h1>
+  <p>어서오세요 ! Jibrary 도서관 사이트입니다. !!</p>
+  <h2>Jibrary Records</h2>
+  <p>Jibrary 현황입니다.</p>
+  <ul>
+    <li><strong>책 종류:</strong> {{ num_books }}</li>
+    <li><strong>보유 책 수량:</strong> {{ num_instances }}</li>
+    <li><strong>대여 가능 책 수량:</strong> {{ num_instances_available }}</li>
+    <li><strong>작가:</strong> {{ num_authors }}</li>
+  </ul>
+{% endblock %}

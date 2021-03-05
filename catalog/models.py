@@ -1,6 +1,6 @@
 from django.db import models
 import uuid
-
+from django.urls import reverse
 # Create your models here.
 
 
@@ -24,9 +24,12 @@ class Author(models.Model):
     def __str__(self):
         return f"{self.last_name}, {self.first_name}"
 
+    def get_absolute_url(self):
+        return reverse("author-detail", args=[str(self.id)])
+
 class Book(models.Model):
     title = models.CharField(max_length=200)
-    author = models.ForeignKey("Author", on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True)
     summary = models.TextField(
         max_length=1000,
         help_text="책의 설명을 입력하세요.")
@@ -38,7 +41,10 @@ class Book(models.Model):
     def display_genre(self):
         return ",".join(genre.name for genre in self.genre.all())
 
-    display_genre.short_decription = "Genre"
+    display_genre.short_decription = "Genre" #잘모르겠음.
+
+    def get_absolute_url(self):
+        return reverse("book-detail", args=[str(self.id)])
     
 class BookInstance(models.Model):
     id = models.UUIDField(
@@ -46,9 +52,9 @@ class BookInstance(models.Model):
         default= uuid.uuid4,
         help_text="도서의 고유번호"
     )
-    book = models.ForeignKey("Book", on_delete=models.SET_NULL, null=True)
-    imprint = models.CharField(max_length=200)
-    due_back = models.DateField(null=True, blank=True)
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
+    imprint = models.CharField(max_length=200) #출판사
+    due_back = models.DateField(null=True, blank=True) # 반납일시
 
     LOAN_STATUS = (
         ("m", "작업중"),
